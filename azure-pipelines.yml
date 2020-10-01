@@ -23,8 +23,8 @@ stages:
     variables:
        buildnum: $[counter(variables['patch'], 0)]
     steps:
-      - bash: |
-           echo "##vso[build.updatebuildnumber]$(major).$(minor).$(patch)"
+      - powershell: |
+           echo "##vso[build.updatebuildnumber]$env:MAJOR.$env:MINOR.$env:PATCH.$env:BUILDNUM"
         name: SetMasterBuildName
 
 
