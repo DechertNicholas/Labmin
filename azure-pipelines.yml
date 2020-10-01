@@ -17,7 +17,7 @@ variables:
 stages:
 - stage: Build_Master_Version_Number
   displayName: Build Master Version Number
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+#  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - job: Build_Master_Version_Number
     displayName: Build Master Version Number
