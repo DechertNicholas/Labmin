@@ -20,6 +20,7 @@ stages:
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - job: Build_Master_Version_Number
+    displayName: Build Master Version Number
     variables:
        buildnum: $[counter(variables['patch'], 0)]
     steps:
