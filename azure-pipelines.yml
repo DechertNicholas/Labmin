@@ -15,19 +15,29 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-- stage:
-  displayName: Build_Master_Version_Number
+- stage: Build_Master_Version_Number
+  displayName: Build Master Version Number
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - job: Build_Master_Version_Number
     displayName: Build Master Version Number
     variables:
        buildnum: $[counter(variables['patch'], 0)]
+       fullbuildnum: $(major).$(minor).$(patch).$(buildnum)
     steps:
       - powershell: |
            echo "##vso[build.updatebuildnumber]$env:MAJOR.$env:MINOR.$env:PATCH.$env:BUILDNUM"
         name: SetMasterBuildName
 
+- stage: Test_Build_App_Version
+  displayName: Test Stage - Versioning
+  jobs:
+  - job: Build_App
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/Labmin.Api.csproj'
 
 # steps:
 # - task: NuGetToolInstaller@1
