@@ -13,6 +13,9 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  major: 0
+  minor: 1
+  patch: 1
 
 stages:
 - stage: Build_Master_Version_Number
