@@ -33,13 +33,11 @@ stages:
   displayName: Test Stage - Versioning
   jobs:
   - job: Build_App
-    variables:
-      fullbuildnum: stageDependencies.Build_Master_Version_Number.Build_Master_Version_Number.outputs['fullbuildnum']
     steps:
     - task: PowerShell@2
       inputs:
         targetType: 'inline'
-        script: 'Write-Host "Build is $($env:fullbuildnum)"'
+        script: 'Write-Host "Build is $(Build.BuildNumber)"'
         errorActionPreference: 'continue'
     - task: DotNetCoreCLI@2
       inputs:
