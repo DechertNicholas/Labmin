@@ -3,8 +3,8 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
-trigger:
-- master
+# trigger:
+# - master
 
 pool:
   name: 'Requiem Labs'
@@ -13,6 +13,9 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  major: 0
+  minor: 1
+  patch: 1
 
 stages:
 - stage: Build_Master_Version_Number
@@ -33,13 +36,11 @@ stages:
   displayName: Test Stage - Versioning
   jobs:
   - job: Build_App
-    variables:
-      fullbuildnum: stageDependencies.Build_Master_Version_Number.Build_Master_Version_Number.outputs['fullbuildnum']
     steps:
     - task: PowerShell@2
       inputs:
         targetType: 'inline'
-        script: 'Write-Host "Build is $($env:fullbuildnum)"'
+        script: 'Write-Host "Build is $(Build.BuildNumber)"'
         errorActionPreference: 'continue'
     - task: DotNetCoreCLI@2
       inputs:
