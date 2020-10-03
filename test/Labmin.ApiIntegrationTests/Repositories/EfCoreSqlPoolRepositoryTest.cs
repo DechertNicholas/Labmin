@@ -219,5 +219,40 @@ namespace Labmin.Api.Repositories.EfCore
             }
 
         }
+
+        [Collection("Non-Parallel SQL Collection 1")]
+        public class DeleteAsync : EfCoreSqlPoolRepositoryTest
+        {
+            [Fact]
+            public async Task Should_return_the_deleted_Pool()
+            {
+                // Arrange
+                var poolToAdd = new Pool { Name = "testpool1.local" };
+
+                // Add data
+                var expectedPool = Context.Set<Pool>().Add(poolToAdd);
+                await Context.SaveChangesAsync();
+
+                // Act
+                var result = await RepositoryUnderTest.DeleteAsync(expectedPool.Entity.Name);
+
+                // Assert
+                Assert.Same(expectedPool.Entity, result);
+            }
+
+            [Fact]
+            public async Task Should_return_null_if_Pool_not_exist()
+            {
+                // Arrange
+                var fakePool = new Pool { Name = "fakepool" };
+
+                // Act
+                var result = await RepositoryUnderTest.DeleteAsync(fakePool.Name);
+
+                // Assert
+                Assert.Null(result);
+            }
+
+        }
     }
 }

@@ -14,39 +14,39 @@ namespace Labmin.Api.Repositories.EfCore
         {
         }
 
-        public async Task<Pool> DoesPoolExistAsync(string poolName)
-        {
-            var pool = await ReadOneAsync(poolName);
-            return pool ?? null;
-        }
+        //public async Task<Pool> DoesPoolExistAsync(string poolName)
+        //{
+        //    var pool = await ReadOneAsync(poolName);
+        //    return pool ?? null;
+        //}
 
-        public async override Task<Pool> CreateAsync(Pool entity)
-        {
-            // If the object already exists, perform a no-op
-            // Names in this application will always be unique, so finding by name is OK
+        //public async override Task<Pool> CreateAsync(Pool entity)
+        //{
+        //    // If the object already exists, perform a no-op
+        //    // Names in this application will always be unique, so finding by name is OK
 
-            var poolExists = await DoesPoolExistAsync(entity.Name);
-            if (poolExists != null)
-            {
-                return poolExists;
-            }
-            else
-            {
-                return await base.CreateAsync(entity);
-            }
-        }
+        //    var poolExists = await DoesPoolExistAsync(entity.Name);
+        //    if (poolExists != null)
+        //    {
+        //        return poolExists;
+        //    }
+        //    else
+        //    {
+        //        return await base.CreateAsync(entity);
+        //    }
+        //}
 
-        public async override Task<Pool> UpdateAsync(Pool entity)
-        {
-            var poolExists = await DoesPoolExistAsync(entity.Name);
-            if (poolExists != null)
-            {
-                return await base.UpdateAsync(entity);
-            }
-            else
-            {
-                return null;
-            }
-        }
+        //public async override Task<Pool> UpdateAsync(Pool entity)
+        //{
+        //    var poolExists = await DoesPoolExistAsync(entity.Name);
+        //    if (poolExists != null)
+        //    {
+        //        return await base.UpdateAsync(entity);
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
     }
 }
