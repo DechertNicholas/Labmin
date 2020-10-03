@@ -34,8 +34,19 @@ namespace Labmin.Api.Repositories.EfCore
             {
                 return await base.CreateAsync(entity);
             }
+        }
 
-
+        public async override Task<Pool> UpdateAsync(Pool entity)
+        {
+            var poolExists = await DoesPoolExistAsync(entity.Name);
+            if (poolExists != null)
+            {
+                return await base.UpdateAsync(entity);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

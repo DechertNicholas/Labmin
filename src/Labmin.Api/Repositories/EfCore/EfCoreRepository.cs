@@ -36,11 +36,14 @@ namespace Labmin.Api.Repositories.EfCore
             await _context.SaveChangesAsync();
             return entity;
         }
-        public async Task<TEntity> UpdateAsync(TEntity entity)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
+            _context.Entry(entity).CurrentValues.SetValues(entity);
             await _context.SaveChangesAsync();
-            return entity;
+            var updatedEntity = await _context.Set<TEntity>().FirstOrDefaultAsync(n => n.Name == entity.Name);
+            
+            return updatedEntity;
         }
 
         public async Task<TEntity> DeleteAsync(string name)
