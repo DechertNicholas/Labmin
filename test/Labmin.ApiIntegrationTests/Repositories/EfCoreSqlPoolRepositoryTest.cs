@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,11 +26,20 @@ namespace Labmin.Api.Repositories.EfCore
             .AddEntityFrameworkSqlServer()
             .BuildServiceProvider();
 
+            var configBuilder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddEnvironmentVariables();
+
+            Configuration = configBuilder.Build();
+
             // Build our SQL string. Eventually this will change so tests can be run locally by different people
-            var sqlString = new SqlConnectionStringBuilder(Configuration.GetConnectionString("LabminDBContext"));
-            sqlString.ApplicationName = "Labmin Repository Test Dev";
-            sqlString.InitialCatalog = $"Labmin_Development_{Environment.MachineName}";
-            sqlString.IntegratedSecurity = true;
+            var sqlString = new SqlConnectionStringBuilder(Configuration.GetConnectionString("LabminDBContext"))
+            {
+                ApplicationName = "Labmin Repository Test Dev",
+                InitialCatalog = $"Labmin_Development_{Environment.MachineName}",
+                IntegratedSecurity = true
+            };
 
             // Build our DbContext
             var builder = new DbContextOptionsBuilder<LabminDbContext>();
