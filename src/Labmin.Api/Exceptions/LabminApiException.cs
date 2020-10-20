@@ -34,6 +34,17 @@ namespace Labmin.Api
         }
     }
 
+    public class PoolAlreadyExistsException : LabminApiException
+    {
+        public PoolAlreadyExistsException(Pool pool) : this(pool.Name)
+        {
+        }
+
+        public PoolAlreadyExistsException(string poolName) : base($"Pool {poolName} already exists.")
+        {
+        }
+    }
+
     public class MachineNotFoundException : LabminApiException
     {
         public MachineNotFoundException(Machine machine)

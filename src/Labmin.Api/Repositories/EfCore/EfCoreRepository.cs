@@ -32,20 +32,9 @@ namespace Labmin.Api.Repositories.EfCore
 
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
-            var foundEntity = await ReadOneAsync(entity.Name);
-            // Ensure entity doesn't exist
-            if (foundEntity == null)
-            {
-                _context.Set<TEntity>().Add(entity);
-                await _context.SaveChangesAsync();
-                foundEntity = await ReadOneAsync(entity.Name);
-                return foundEntity;
-            }
-            else
-            {
-                return foundEntity;
-            }
-            
+            _context.Set<TEntity>().Add(entity);
+            await _context.SaveChangesAsync();
+            return await ReadOneAsync(entity.Name);
         }
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {

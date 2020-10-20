@@ -7,7 +7,7 @@ using Labmin.Core.Models;
 
 namespace Labmin.Api.Repositories
 {
-    interface IRepository<T> where T : class, IEntity
+    public interface IRepository<T> where T : class, IEntity
     {
         Task<IEnumerable<T>> ReadAllAsync();
         Task<T> ReadOneAsync(string name);

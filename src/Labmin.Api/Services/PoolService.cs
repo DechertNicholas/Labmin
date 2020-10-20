@@ -11,16 +11,26 @@ namespace Labmin.Api.Services
 {
     public class PoolService : IPoolService
     {
-        private EfCoreRepository<Pool, DbContext> _poolRepository;
+        private IRepository<Pool> _poolRepository;
 
-        public PoolService(EfCoreRepository<Pool, DbContext> poolRepository)
+        public PoolService(IRepository<Pool> poolRepository)
         {
             _poolRepository = poolRepository ?? throw new ArgumentNullException(nameof(poolRepository));
         }
 
-        public Task<Pool> CreateAsync(Pool pool)
+        public async Task<Pool> CreateAsync(Pool pool)
         {
-            throw new NotSupportedException();
+            var foundEntity = await _poolRepository.ReadOneAsync(pool.Name);
+            // Ensure entity doesn't exist
+            if (foundEntity == null)
+            {
+                // Doesn't exist, create the entity
+                return await _poolRepository.CreateAsync(pool);
+            }
+            else
+            {
+                throw new PoolAlreadyExistsException(pool);
+            }
         }
 
         public Task<Pool> DeleteAsync(string poolName)
