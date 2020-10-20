@@ -75,9 +75,9 @@ namespace Labmin.Api.Repositories.EfCore
                 var expectedPools = new List<Pool>();
                 var poolsToAdd = new Pool[]
                 {
-                    new Pool { Name = "testpool1.local" },
-                    new Pool { Name = "testpool2.local" },
-                    new Pool { Name = "testpool3.local" }
+                    new Pool { Name = "testpool1.local-ReadAllAsync" },
+                    new Pool { Name = "testpool2.local-ReadAllAsync" },
+                    new Pool { Name = "testpool3.local-ReadAllAsync" }
                 };
 
                 // Add Data
@@ -114,7 +114,7 @@ namespace Labmin.Api.Repositories.EfCore
             public async Task Should_return_the_expected_Pool()
             {
                 // Arrange
-                var poolToAdd = new Pool { Name = "testpool1.local" };
+                var poolToAdd = new Pool { Name = "testpool1.local-ReadOneAsync" };
 
                 // Add data
                 var expectedPool = Context.Set<Pool>().Add(poolToAdd);
@@ -135,7 +135,7 @@ namespace Labmin.Api.Repositories.EfCore
             public async Task Should_return_null_if_the_Pool_does_not_exist()
             {
                 // Arrange
-                var unexistingPool = "notapool";
+                var unexistingPool = "notapool-ReadOneAsync";
 
                 // Act
                 var result = await RepositoryUnderTest.ReadOneAsync(unexistingPool);
@@ -152,7 +152,7 @@ namespace Labmin.Api.Repositories.EfCore
             public async Task Should_create_the_expected_Pool()
             {
                 // Arrange
-                var poolToCreate = new Pool { Name = "testpool1.local" };
+                var poolToCreate = new Pool { Name = "testpool1.local-CreateAsync" };
 
                 // Act
                 var createdPool = await RepositoryUnderTest.CreateAsync(poolToCreate);
@@ -165,29 +165,6 @@ namespace Labmin.Api.Repositories.EfCore
                 // Assert
                 Assert.Same(createdPool, result);
             }
-
-            [Fact]
-            public async Task Should_return_the_existing_Pool_if_Pool_already_exists()
-            {
-                // Arrange
-                var poolToAdd = new Pool { Name = "testpool1.local" };
-
-                // Add data
-                var expectedPool = Context.Set<Pool>().Add(poolToAdd);
-                await Context.SaveChangesAsync();
-
-                // Act
-                var result = await RepositoryUnderTest.CreateAsync(poolToAdd);
-
-                // Cleanup
-                Context.Set<Pool>().Remove(expectedPool.Entity);
-                await Context.SaveChangesAsync();
-
-                // Assert
-                Assert.Same(expectedPool.Entity, result);
-            }
-
-
         }
 
         [Collection("Non-Parallel SQL Collection 1")]
@@ -197,14 +174,14 @@ namespace Labmin.Api.Repositories.EfCore
             public async Task Should_update_the_existing_Pool()
             {
                 // Arrange
-                var poolToAdd = new Pool { Name = "testpool1.local" };
+                var poolToAdd = new Pool { Name = "testpool1.local-UpdateAsync" };
 
                 // Add data
                 var expectedPool = Context.Set<Pool>().Add(poolToAdd);
                 await Context.SaveChangesAsync();
 
                 // Act
-                expectedPool.Entity.Name = "updatedtestpool1.local";
+                expectedPool.Entity.Name = "updatedtestpool1.local-UpdateAsync";
                 var result = await RepositoryUnderTest.UpdateAsync(expectedPool.Entity);
 
                 // Cleanup
@@ -219,7 +196,7 @@ namespace Labmin.Api.Repositories.EfCore
             public async Task Should_return_null_if_Pool_not_exist()
             {
                 // Arrange
-                var fakePool = new Pool { Name = "fakepool" };
+                var fakePool = new Pool { Name = "fakepool-UpdateAsync" };
 
                 // Act
                 var result = await RepositoryUnderTest.UpdateAsync(fakePool);
@@ -237,7 +214,7 @@ namespace Labmin.Api.Repositories.EfCore
             public async Task Should_return_the_deleted_Pool()
             {
                 // Arrange
-                var poolToAdd = new Pool { Name = "testpool1.local" };
+                var poolToAdd = new Pool { Name = "testpool1.local-DeleteAsync" };
 
                 // Add data
                 var expectedPool = Context.Set<Pool>().Add(poolToAdd);
@@ -254,7 +231,7 @@ namespace Labmin.Api.Repositories.EfCore
             public async Task Should_return_null_if_Pool_not_exist()
             {
                 // Arrange
-                var fakePool = new Pool { Name = "fakepool" };
+                var fakePool = new Pool { Name = "fakepool-DeleteAsync" };
 
                 // Act
                 var result = await RepositoryUnderTest.DeleteAsync(fakePool.Name);
