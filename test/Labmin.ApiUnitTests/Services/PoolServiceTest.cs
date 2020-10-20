@@ -50,8 +50,41 @@ namespace Labmin.Api.Services
                 // Act, Assert
                 var exception = await Assert.ThrowsAsync<PoolAlreadyExistsException>(() => ServiceUnderTest.CreateAsync(expectedPool));
             }
+        }
 
+        public class IsPoolExistsAsync : PoolServiceTest
+        {
+            [Fact]
+            public async Task Should_return_true_if_the_Pool_exists()
+            {
+                // Arrange
+                var expectedPool = new Pool { Name = "testpool1.local" };
+                PoolRepositoryMock
+                    .Setup(x => x.ReadOneAsync(expectedPool.Name))
+                    .ReturnsAsync(expectedPool);
 
+                // Act
+                var result = await ServiceUnderTest.IsPoolExistsAsync(expectedPool.Name);
+
+                // Assert
+                Assert.True(result);
+            }
+
+            [Fact]
+            public async Task Should_return_false_if_the_Pool_not_exist()
+            {
+                // Arrange
+                var fakePool = new Pool { Name = "FakePool" };
+                PoolRepositoryMock
+                    .Setup(x => x.ReadOneAsync(fakePool.Name))
+                    .ReturnsAsync(() => null);
+
+                // Act
+                var result = await ServiceUnderTest.IsPoolExistsAsync(fakePool.Name);
+
+                // Assert
+                Assert.False(result);
+            }
         }
     }
 }

@@ -20,9 +20,8 @@ namespace Labmin.Api.Services
 
         public async Task<Pool> CreateAsync(Pool pool)
         {
-            var foundEntity = await _poolRepository.ReadOneAsync(pool.Name);
             // Ensure entity doesn't exist
-            if (foundEntity == null)
+            if (!IsPoolExistsAsync(pool.Name).Result)
             {
                 // Doesn't exist, create the entity
                 return await _poolRepository.CreateAsync(pool);
