@@ -22,7 +22,7 @@ namespace Labmin.Api.Services
         public async Task<Pool> CreateAsync(Pool pool)
         {
             // Ensure entity doesn't exist
-            if (!IsPoolExistsAsync(pool.Name).Result)
+            if (!await IsPoolExistsAsync(pool.Name))
             {
                 // Doesn't exist, create the entity
                 return await _poolRepository.CreateAsync(pool);
@@ -35,7 +35,7 @@ namespace Labmin.Api.Services
 
         public async Task<Pool> DeleteAsync(string poolName)
         {
-            if (IsPoolExistsAsync(poolName).Result)
+            if (await IsPoolExistsAsync(poolName))
             {
                 return await _poolRepository.DeleteAsync(poolName);
             }
@@ -69,9 +69,9 @@ namespace Labmin.Api.Services
             }
         }
 
-        public Task<Pool> UpdateAsync(Pool pool)
+        public async Task<Pool> UpdateAsync(Pool pool)
         {
-            throw new NotSupportedException();
+            throw new NotImplementedException();
         }
     }
 }
