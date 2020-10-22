@@ -1,6 +1,7 @@
 ﻿using Labmin.Api.Repositories;
 using Labmin.Api.Repositories.EfCore;
 using Labmin.Core.Models;
+using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,16 @@ namespace Labmin.Api.Services
             }
         }
 
-        public Task<Pool> DeleteAsync(string poolName)
+        public async Task<Pool> DeleteAsync(string poolName)
         {
-            throw new NotSupportedException();
+            if (IsPoolExistsAsync(poolName).Result)
+            {
+                return await _poolRepository.DeleteAsync(poolName);
+            }
+            else
+            {
+                throw new PoolNotFoundException(poolName);
+            }
         }
 
         public async Task<bool> IsPoolExistsAsync(string poolName)

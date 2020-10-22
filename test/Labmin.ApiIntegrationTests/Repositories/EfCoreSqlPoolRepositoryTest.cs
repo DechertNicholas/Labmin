@@ -226,20 +226,6 @@ namespace Labmin.Api.Repositories.EfCore
                 // Assert
                 Assert.Same(expectedPool.Entity, result);
             }
-
-            [Fact]
-            public async Task Should_return_null_if_Pool_not_exist()
-            {
-                // Arrange
-                var fakePool = new Pool { Name = "fakepool-DeleteAsync" };
-
-                // Act
-                var result = await RepositoryUnderTest.DeleteAsync(fakePool.Name);
-
-                // Assert
-                Assert.Null(result);
-            }
-
         }
     }
 }

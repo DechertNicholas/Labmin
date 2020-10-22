@@ -57,25 +57,10 @@ namespace Labmin.Api.Repositories.EfCore
         public async Task<TEntity> DeleteAsync(string name)
         {
             var foundEntity = await ReadOneAsync(name);
-            if (foundEntity == null)
-            {
-                // If entity does not exist, return null (error in service layer)
-                return null;
-            }
-
             _context.Set<TEntity>().Remove(foundEntity);
             await _context.SaveChangesAsync();
 
-            // Confirm deletion
-            var nullEntity = await ReadOneAsync(name);
-            if (nullEntity == null)
-            {
-                // If entity does not exist, return the entity we deleted
-                return foundEntity;
-            }
-
-            // Otherwise, return null (error in service layer)
-            return null;
+            return foundEntity;
         }
     }
 }
