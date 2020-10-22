@@ -51,14 +51,22 @@ namespace Labmin.Api.Services
             return pool != null;
         }
 
-        public Task<IEnumerable<Pool>> ReadAllAsync()
+        public async Task<IEnumerable<Pool>> ReadAllAsync()
         {
-            return _poolRepository.ReadAllAsync();
+            return await _poolRepository.ReadAllAsync();
         }
 
-        public Task<Pool> ReadOneAsync(string poolName)
+        public async Task<Pool> ReadOneAsync(string poolName)
         {
-            return _poolRepository.ReadOneAsync(poolName);
+            var foundPool = await _poolRepository.ReadOneAsync(poolName);
+            if (foundPool != null)
+            {
+                return foundPool;
+            }
+            else
+            {
+                throw new PoolNotFoundException(poolName);
+            }
         }
 
         public Task<Pool> UpdateAsync(Pool pool)

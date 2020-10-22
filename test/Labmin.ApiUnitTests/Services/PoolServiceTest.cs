@@ -150,5 +150,38 @@ namespace Labmin.Api.Services
                 );
             }
         }
+
+        public class ReadOneAsync : PoolServiceTest
+        {
+            [Fact]
+            public async Task Should_return_the_expected_Pool()
+            {
+                // Arrange
+                var expectedPool = new Pool { Name = "testpool1.local" };
+                PoolRepositoryMock
+                    .Setup(x => x.ReadOneAsync(expectedPool.Name))
+                    .ReturnsAsync(expectedPool);
+
+                // Act
+                var result = await ServiceUnderTest.ReadOneAsync(expectedPool.Name);
+
+                // Assert
+                Assert.Same(expectedPool, result);
+            }
+
+            [Fact]
+            public async Task Should_throw_PoolNotFoundException_if_Pool_not_exist()
+            {
+                // Arrange
+                var fakePool = new Pool { Name = "fakepool" };
+                PoolRepositoryMock
+                    .Setup(x => x.ReadOneAsync(fakePool.Name))
+                    .ReturnsAsync(() => null);
+
+                // Act, Assert
+                var exception = await Assert.ThrowsAsync<PoolNotFoundException>(() => ServiceUnderTest.ReadOneAsync(fakePool.Name));
+            }
+
+        }
     }
 }
