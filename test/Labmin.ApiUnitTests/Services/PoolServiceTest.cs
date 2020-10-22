@@ -122,5 +122,33 @@ namespace Labmin.Api.Services
                 var exception = await Assert.ThrowsAsync<PoolNotFoundException>(() => ServiceUnderTest.DeleteAsync(fakePool.Name));
             }
         }
+
+        public class ReadAllAsync : PoolServiceTest
+        {
+            [Fact]
+            public async Task Should_return_all_Pools()
+            {
+                // Arrange
+                var expectedPools = new Pool[]
+                {
+                    new Pool { Name = "testpool1.local" },
+                    new Pool { Name = "testpool2.local" },
+                    new Pool { Name = "testpool3.local" }
+                };
+                PoolRepositoryMock
+                    .Setup(x => x.ReadAllAsync())
+                    .ReturnsAsync(expectedPools);
+
+                // Act
+                var result = await ServiceUnderTest.ReadAllAsync();
+
+                // Assert
+                Assert.Collection(result,
+                    pool => Assert.Same(expectedPools[0], pool),
+                    pool => Assert.Same(expectedPools[1], pool),
+                    pool => Assert.Same(expectedPools[2], pool)
+                );
+            }
+        }
     }
 }
