@@ -69,9 +69,19 @@ namespace Labmin.Api.Services
             }
         }
 
-        public async Task<Pool> UpdateAsync(Pool pool)
+        public async Task<Pool> UpdateAsync(Pool poolWithUpdates)
         {
-            throw new NotImplementedException();
+            if (await IsPoolExistsAsync(poolWithUpdates.Name))
+            {
+                var poolToUpdate = await ReadOneAsync(poolWithUpdates.Name);
+                poolWithUpdates.Id = poolToUpdate.Id;
+                var updatedPool = await _poolRepository.UpdateAsync(poolWithUpdates);
+                return updatedPool;
+            }
+            else
+            {
+                throw new PoolNotFoundException(poolWithUpdates.Name);
+            }
         }
     }
 }

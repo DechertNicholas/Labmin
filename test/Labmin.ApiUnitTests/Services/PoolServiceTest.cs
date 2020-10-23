@@ -181,7 +181,45 @@ namespace Labmin.Api.Services
                 // Act, Assert
                 var exception = await Assert.ThrowsAsync<PoolNotFoundException>(() => ServiceUnderTest.ReadOneAsync(fakePool.Name));
             }
+        }
 
+        public class UpdateAsync : PoolServiceTest
+        {
+            [Fact]
+            public async Task Should_return_the_updated_Pool()
+            {
+                // in prod we probably don't want to allow users to rename pools, but this test is just for updating an entity
+                // Arrange
+                var poolInRepository = new Pool { Id = 1, Name = "preupdatepool.local" };
+                var poolWithUpdates = new Pool { Name = "postupdatepool.local" };
+                var poolInRepositoryWithUpdates = new Pool { Id = 1, Name = poolWithUpdates.Name };
+
+                PoolRepositoryMock
+                    .Setup(x => x.ReadOneAsync(poolWithUpdates.Name))
+                    .ReturnsAsync(poolInRepository);
+                PoolRepositoryMock
+                    .Setup(x => x.UpdateAsync(poolWithUpdates))
+                    .ReturnsAsync(poolInRepositoryWithUpdates);
+
+                // Act
+                var result = await ServiceUnderTest.UpdateAsync(poolWithUpdates);
+
+                // Assert
+                Assert.Same(poolInRepositoryWithUpdates, result);
+            }
+
+            [Fact]
+            public async Task Should_throw_PoolNotFoundException_if_Pool_not_exist()
+            {
+                // Arrange
+                var fakePool = new Pool { Name = "fakepool" };
+                PoolRepositoryMock
+                    .Setup(x => x.ReadOneAsync(fakePool.Name))
+                    .ReturnsAsync(() => null);
+
+                // Act, Assert
+                var exception = await Assert.ThrowsAsync<PoolNotFoundException>(() => ServiceUnderTest.ReadOneAsync(fakePool.Name));
+            }
         }
     }
 }
