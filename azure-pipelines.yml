@@ -15,6 +15,7 @@ variables:
   buildConfiguration: 'Release'
 
 jobs:
+  # Versioning
   - job: GitVersion
     steps:
     - task: gitversion/setup@0
@@ -22,46 +23,21 @@ jobs:
         versionSpec: '5.x'
     - task: gitversion/execute@0
       displayName: Determine Version
-    - task: PowerShell@2
-      displayName: "Show Version Numbers"
-      inputs:
-        targetType: 'inline'
-        script: |
-          Write-Output "Major: $(GitVersion.Major)"
-          Write-Output "Minor: $(GitVersion.Minor)"
-          Write-Output "Patch: $(GitVersion.Patch)"
-          Write-Output "PreReleaseTag: $(GitVersion.PreReleaseTag)"
-          Write-Output "PreReleaseTagWithDash: $(GitVersion.PreReleaseTagWithDash)"
-          Write-Output "PreReleaseLabel: $(GitVersion.PreReleaseLabel)"
-          Write-Output "PreReleaseNumber: $(GitVersion.PreReleaseNumber)"
-          Write-Output "WeightedPreReleaseNumber: $(GitVersion.WeightedPreReleaseNumber)"
-          Write-Output "BuildMetaData: $(GitVersion.BuildMetaData)"
-          Write-Output "BuildMetaDataPadded: $(GitVersion.BuildMetaDataPadded)"
-          Write-Output "FullBuildMetaData: $(GitVersion.FullBuildMetaData)"
-          Write-Output "MajorMinorPatch: $(GitVersion.MajorMinorPatch)"
-          Write-Output "SemVer: $(GitVersion.SemVer)"
-          Write-Output "LegacySemVer: $(GitVersion.LegacySemVer)"
-          Write-Output "LegacySemVerPadded: $(GitVersion.LegacySemVerPadded)"
-          Write-Output "AssemblySemVer: $(GitVersion.AssemblySemVer)"
-          Write-Output "AssemblySemFileVer: $(GitVersion.AssemblySemFileVer)"
-          Write-Output "FullSemVer: $(GitVersion.FullSemVer)"
-          Write-Output "InformationalVersion: $(GitVersion.InformationalVersion)"
-          Write-Output "BranchName: $(GitVersion.BranchName)"
-          Write-Output "EscapedBranchName: $(GitVersion.EscapedBranchName)"
-          Write-Output "Sha: $(GitVersion.Sha)"
-          Write-Output "ShortSha: $(GitVersion.ShortSha)"
-          Write-Output "NuGetVersionV2: $(GitVersion.NuGetVersionV2)"
-          Write-Output "NuGetVersion: $(GitVersion.NuGetVersion)"
-          Write-Output "NuGetPreReleaseTagV2: $(GitVersion.NuGetPreReleaseTagV2)"
-          Write-Output "NuGetPreReleaseTag: $(GitVersion.NuGetPreReleaseTag)"
-          Write-Output "VersionSourceSha: $(GitVersion.VersionSourceSha)"
-          Write-Output "CommitsSinceVersionSource: $(GitVersion.CommitsSinceVersionSource)"
-          Write-Output "CommitsSinceVersionSourcePadded: $(GitVersion.CommitsSinceVersionSourcePadded)"
-          Write-Output "UncommittedChanges: $(GitVersion.UncommittedChanges)"
-          Write-Output "CommitDate: $(GitVersion.CommitDate)"
-  - job: Testing
+  
+  # Build
+  - job: Build
     steps:
     - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        projects: '**/src/*.csproj'
+        
+  # Testing
+  - job: Testing
+    dependsOn: GitVersion
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: "Testing"
       inputs:
         command: 'test'
         projects: '**/*UnitTests.csproj'
