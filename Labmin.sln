@@ -15,7 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labmin.PowerShell.Client", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labmin.ApiIntegrationTests", "test\Labmin.ApiIntegrationTests\Labmin.ApiIntegrationTests.csproj", "{09DEEE29-7026-4AB2-93A0-CCE57D20E600}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labmin.ApiUnitTests", "test\Labmin.ApiUnitTests\Labmin.ApiUnitTests.csproj", "{90BA02DA-77BD-4A7D-BDEF-06C63A99489F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labmin.ApiUnitTests", "test\Labmin.ApiUnitTests\Labmin.ApiUnitTests.csproj", "{90BA02DA-77BD-4A7D-BDEF-06C63A99489F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7D654DA3-730D-4B41-AD51-1A2C2EAE2CAD}"
+	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
