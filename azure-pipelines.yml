@@ -49,16 +49,3 @@ jobs:
       inputs:
         command: 'test'
         projects: '**/*UnitTests.csproj'
-        arguments: '--logger trx --results-directory $(Common.TestResultsDirectory) --configuration $(buildConfiguration) --collect "Code coverage" /p:CoverletOutputFormat=jacoco /p:CoverletOutput=$(Common.TestResultsDirectory)'
-        publishTestResults: false
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'XUnit'
-        testResultsFiles: '**/*.trx'
-        searchFolder: '$(Common.TestResultsDirectory)'
-        failTaskOnFailedTests: true
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: 'JaCoCo'
-        summaryFileLocation: '$(Common.TestResultsDirectory)\*\*.coverage'
-        pathToSources: '$(System.DefaultWorkingDirectory)\src\'
