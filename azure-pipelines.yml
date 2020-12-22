@@ -49,4 +49,5 @@ jobs:
       inputs:
         command: 'test'
         projects: '**/*UnitTests.csproj'
-        arguments: '--configuration $(buildConfiguration) --collect "Code coverage" /p:CoverletOutputFormat=jacoco /p:CoverletOutput=$(Common.TestResultsDirectory)/'
+        arguments: '--logger trx --results-directory $(Common.TestResultsDirectory) --configuration $(buildConfiguration) --collect "Code coverage" /p:CoverletOutputFormat=jacoco /p:CoverletOutput=$(Common.TestResultsDirectory)'
+        publishTestResults: false
