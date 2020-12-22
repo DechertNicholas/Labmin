@@ -3,9 +3,53 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
+# Trigger on master branch and on pull request to develop
 trigger:
 - master
 
-pool:
-  name: 'Requiem Labs'
+pr:
+- develop
 
+pool:
+  name: 'Requiem Labs Build'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+jobs:
+  # Versioning
+  - job: GitVersion
+    steps:
+    - task: gitversion/setup@0
+      inputs:
+        versionSpec: '5.x'
+    - task: gitversion/execute@0
+      displayName: Determine Version
+  
+  # Build
+  - job: Build
+    dependsOn: GitVersion
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: "Restore NuGet Packages"
+      inputs:
+        command: 'restore'
+        projects: $(solution)
+        feedsToUse: 'select'
+    - task: DotNetCoreCLI@2
+      displayName: "Build"
+      inputs:
+        command: 'build'
+        projects: '**/src/*/*.csproj'
+        
+  # Testing
+  - job: Test
+    dependsOn: Build
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: "Test"
+      inputs:
+        command: 'test'
+        projects: '**/*UnitTests.csproj'
