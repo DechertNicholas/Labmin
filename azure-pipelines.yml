@@ -59,5 +59,9 @@ jobs:
           Write-Output "CommitsSinceVersionSourcePadded: $(GitVersion.CommitsSinceVersionSourcePadded)"
           Write-Output "UncommittedChanges: $(GitVersion.UncommittedChanges)"
           Write-Output "CommitDate: $(GitVersion.CommitDate)"
-      
-    
+  - job: Testing
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+        projects: '**/*UnitTests.csproj'
