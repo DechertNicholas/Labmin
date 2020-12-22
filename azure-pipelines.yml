@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  name: 'Requiem Labs'
+  name: 'Requiem Labs Build'
 
 variables:
   solution: '**/*.sln'
