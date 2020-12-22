@@ -26,6 +26,7 @@ jobs:
   
   # Build
   - job: Build
+    dependsOn: GitVersion
     steps:
     - task: DotNetCoreCLI@2
       inputs:
@@ -34,7 +35,7 @@ jobs:
         
   # Testing
   - job: Testing
-    dependsOn: GitVersion
+    dependsOn: Build
     steps:
     - task: DotNetCoreCLI@2
       displayName: "Testing"
