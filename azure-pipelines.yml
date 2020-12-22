@@ -3,8 +3,12 @@
 # Add steps that publish symbols, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
 
+# Trigger on master branch and on pull request to develop
 trigger:
 - master
+
+pr:
+- develop
 
 pool:
   name: 'Requiem Labs Build'
