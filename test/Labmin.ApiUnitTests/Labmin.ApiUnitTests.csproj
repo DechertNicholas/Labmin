@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Labmin.Api\Labmin.Api.csproj" />
+    <ProjectReference Include="..\..\src\Labmin.Core\Labmin.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -31,7 +31,7 @@ namespace Labmin.Api.Controllers
 
         // GET: api/v1/Pools/5
         [HttpGet("{name}")]
-        public async Task<ActionResult<Pool>> GetPool(string name)
+        public async Task<Pool> GetPool(string name)
         {
             var pool = await _poolService.ReadOneAsync(name);
 
