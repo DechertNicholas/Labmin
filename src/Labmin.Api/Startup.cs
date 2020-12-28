@@ -2,10 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Labmin.Api.Data;
+using Labmin.Api.Repositories;
+using Labmin.Api.Repositories.EfCore;
+using Labmin.Api.Services;
+using Labmin.Core.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,6 +31,12 @@ namespace Labmin.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddScoped(typeof(DbContext), typeof(LabminDbContext));
+            
+            services.AddDbContext<LabminDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LabminDBContext")));
+            services.AddScoped<DbContext, LabminDbContext>();
+            services.AddScoped<IRepository<Pool>, EfCoreSqlPoolRepository>();
+            services.AddScoped<IPoolService, PoolService>();
             services.AddControllers();
         }
 
