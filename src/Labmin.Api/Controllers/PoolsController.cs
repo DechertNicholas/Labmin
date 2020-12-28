@@ -21,14 +21,14 @@ namespace Labmin.Api.Controllers
             _context = context;
         }
 
-        // GET: api/Pools1
+        // GET: api/Pools
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pool>>> GetPools()
         {
             return await _context.Pools.ToListAsync();
         }
 
-        // GET: api/Pools1/5
+        // GET: api/Pools/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Pool>> GetPool(int id)
         {
@@ -42,7 +42,7 @@ namespace Labmin.Api.Controllers
             return pool;
         }
 
-        // PUT: api/Pools1/5
+        // PUT: api/Pools/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPool(int id, Pool pool)
@@ -73,7 +73,7 @@ namespace Labmin.Api.Controllers
             return NoContent();
         }
 
-        // POST: api/Pools1
+        // POST: api/Pools
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Pool>> PostPool(Pool pool)
@@ -84,7 +84,7 @@ namespace Labmin.Api.Controllers
             return CreatedAtAction("GetPool", new { id = pool.Id }, pool);
         }
 
-        // DELETE: api/Pools1/5
+        // DELETE: api/Pools/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePool(int id)
         {
